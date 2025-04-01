@@ -1,0 +1,26 @@
+a number of extra steps were taken because I couldn't parse from cbs or yahoo.
+a check was devised and the code is below.
+
+url = "https://en.wikipedia.org/wiki/List_of_World_Series_champions"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, "lxml")
+
+# Need to find the rows first.
+tables = soup.find_all("table", class_="wikitable") #
+
+
+print(f"Found {len(tables)} tables") removed. remnant. used to confirm the table.
+
+# Gotta test to make sure table data is scraped.
+
+if tables:
+    first_table = tables[0]
+    rows = first_table.find_all("tr")
+    print(f"Found {len(rows)} rows in the first table")
+
+    for i, row in enumerate(rows[:5]):  # Print first 5 rows for the test.
+        colums = row.find_all(["th", "td"])
+        text = [col.text.strip() for col in colums]
+        print(f"Row {i+1}: {text}")
+else:
+    print("No tables found.")
